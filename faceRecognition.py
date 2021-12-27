@@ -11,10 +11,10 @@ images = []
 classNames = []
 mylist = os.listdir(path)
 
-for cl in mylist:
-    curImg = cv2.imread(f'{path}/{cl}')
+for p in mylist:
+    curImg = cv2.imread(f'{path}/{p}')
     images.append(curImg)
-    classNames.append(os.path.splitext(cl)[0])
+    classNames.append(os.path.splitext(p)[0])
 
 def findEncodings(images):
     encodeList = []
@@ -25,23 +25,39 @@ def findEncodings(images):
             encodeList.append(list(encoded_face[0]))
     return encodeList
     
+def markAttendance(name):
+    with open('Attendance.csv','r+') as f:
+        myDataList = f.readlines()
+        nameList = []
+        for line in myDataList:
+            entry = line.split(',')
+            nameList.append(entry[0])
+        if name not in nameList:
+            now = datetime.now()
+            time = now.strftime('%I:%M:%S:%p')
+            date = now.strftime('%d-%B-%Y')
+            f.writelines(f'{name}, {time}, {date}')
+            f.writelines("\n")
+            
 encoded_face_train = findEncodings(images)
 cap  = cv2.VideoCapture(0)
 success, img = cap.read()
 img1 = cv2.resize(img, (0,0), None, 0.25,0.25)
 img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
-faces_in_frame = face_recognition.face_locations(img1)
-encoded_face = face_recognition.face_encodings(imgS, faces_in_frame)
-matches = face_recognition.compare_faces(encoded_face_train, encoded_face[0])
-faceDist = face_recognition.face_distance(encoded_face_train, encoded_face[0])
+face = face_recognition.face_locations(img1)
+encoded_face = face_recognition.face_encodings(imgS, face)
+matches, faceDist = face_recognition.compare_faces(encoded_face_train, encoded_face[0]), face_recognition.face_distance(encoded_face_train, encoded_face[0])
 matchIndex = np.argmin(faceDist)
 
+status = "unknown"
 cv2.imshow('webcam', img)
 if matches[matchIndex]:
     name = classNames[matchIndex].lower()
-    y1,x2,y2,x1 = faces_in_frame[0]
+    y1,x2,y2,x1 = face[0]
     y1, x2,y2,x1 = y1*4,x2*4,y2*4,x1*4
     cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
     cv2.rectangle(img, (x1,y2-35),(x2,y2), (0,255,0), cv2.FILLED)
     cv2.putText(img,name, (x1+6,y2-5), cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
-    print(name)
+    markAttendance(name)
+    status = "Your attendance has been marked " + name    
+print(status)

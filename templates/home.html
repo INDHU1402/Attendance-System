@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
+    </head>
+    <body>
+    <nav style="height: 70px; right: 180px; zoom: 120%;">
+        <img src="{{url_for('static', filename='logo.png')}}" alt="" class="logo">
+    </nav>
+    <div class="hero" style="zoom: 110%;">
+        <br><br>
+        <div>
+            <p> {{flg}} </p>
+            {% if flg == True %}
+            <a href="/attendance"><img style="float:left; margin-top: 130px; margin-left:130px; width: 300px; height:280px; border-radius: 100% ;"
+            src="{{url_for('static', filename='attendance.jpg')}}"></a>
+            {% endif %}
+            {% if flg == False %}
+            <img style="float:left; margin-top: 130px; margin-left:130px; width: 300px; height:280px; border-radius: 100% ;"
+                src="{{url_for('static', filename= 'logo.png')}}">
+                <p> Your attendance has been marked {{ status }} ! </p>
+            {% endif %}
+        </div>
+        <div class="text-container">
+            <h2 style="font-size: 45px;">Facial Recognition <br> Based Attendance Sytem</h2>
+            <br><br>
+            <a>Class</a><br>
+            <a>Teacher</a><br>
+            <a>Timings</a>
+        </div>
+    </div>
+</body>
+</html>

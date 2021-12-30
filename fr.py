@@ -3,7 +3,6 @@ import face_recognition
 import os
 import numpy as np
 from datetime import datetime
-import pickle
 
 path = 'images'
 
@@ -38,19 +37,26 @@ def markAttendance(name):
             date = now.strftime('%d-%B-%Y')
             f.writelines(f'{name}, {time}, {date}')
             f.writelines("\n")
-            
+        if name in nameList:
+            print("Already given Attendance")
+            now = datetime.now()
+            time = now.strftime('%I:%M:%S:%p')
+            date = now.strftime('%d-%B-%Y')
+            f.writelines(f'{name}, {time}, {date}')
+            f.writelines("\n")
+
 encoded_face_train = findEncodings(images)
+#print(encoded_face_train)
 cap  = cv2.VideoCapture(0)
 success, img = cap.read()
 img1 = cv2.resize(img, (0,0), None, 0.25,0.25)
 img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
 face = face_recognition.face_locations(img1)
-encoded_face = face_recognition.face_encodings(imgS, face)
+encoded_face = face_recognition.face_encodings(img1, face)
 matches, faceDist = face_recognition.compare_faces(encoded_face_train, encoded_face[0]), face_recognition.face_distance(encoded_face_train, encoded_face[0])
 matchIndex = np.argmin(faceDist)
 
 status = "unknown"
-cv2.imshow('webcam', img)
 if matches[matchIndex]:
     name = classNames[matchIndex].lower()
     y1,x2,y2,x1 = face[0]

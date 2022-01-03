@@ -53,3 +53,6 @@
         margin-top: 30px;
         border-radius: 30px;
     }
+    a.two:link {color:#ff0000;}
+    a.two:visited {color:#0000ff;}
+    a.two:hover {font-size:150%;}

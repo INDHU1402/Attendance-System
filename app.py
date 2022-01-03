@@ -14,12 +14,15 @@ def home():
 @app.route("/attendance")
 def face_recognition():
     flg = False
-    file = open(r'fr.py', 'r').read()
+    file = open(r'cam.py', 'r').read()
     exec(file)
+    file1 = open(r'fr.py', 'r').read()
+    exec(file1)
     with open('Attendance.csv','r+') as f:
         myDataList = f.readlines()
         nameList = []
         for line in myDataList:
             entry = line.split(',')
             nameList.append(entry[0])
-    return render_template('home.html', name = 'Mr.abcd', flg=flg, status=nameList[-1])
+    pth = "url_for('static', filename=" + "images/" + nameList[-1] + ".jpg')"
+    return render_template('home.html', name = 'Mr.abcd', flg=flg, status=nameList[-1], pth=pth)

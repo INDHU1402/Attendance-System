@@ -3,6 +3,13 @@
         * {
           box-sizing: border-box;
         }
+        .hero{
+        background:whitesmoke;
+        width: 800px;
+        color: beige;
+        display: table;
+          clear: both;
+    }
         .column {
           float: left;
           width: 380px;
@@ -14,32 +21,59 @@
           display: table;
           clear: both;
         }
+        a.two:link {color:#ff0000;}
+        a.two:visited {color:#0000ff;}
+        a.two:hover {font-size:150%;}
+        nav .logo{
+        width: 180px;
+        cursor: pointer;
+        }
+        nav ul{
+            flex: 1;
+            text-align: right;
+        }
+        nav ul li{
+            display: inline-block;
+            list-style: none;
+        }
+        nav ul li a{
+            text-decoration: none;
+            color: #fff;
+        }
     </style>
 </head>
-<div class="row">
-    <div class="column">
+<body>
+  <nav style="height: 70px; zoom: 120%;">
+    <img src="{{url_for('static', filename='logo.png')}}"  style="margin-right: 500px; margin-top: 10px;" alt="" class="logo">
+    <a class="two" style="float:left; margin-top: -15px; margin-left:1100px;" href="/logout">Logout</a>
+</nav>
+<div class="row" style="background-color: black; color:white; height: 80px;">
+    <div class="column" style="width: 250px;">
       <h2>Student Name</h2>
     </div>
-    <div class="column" >
+    <div class="column" style="width: 150px;">
       <h2>Delete</h2>
     </div>
-    <div class="column">
+    <div class="column" style="width: 400px;">
       <h2>Update</h2>
     </div>
+    <div class="column" style="width: 300px;">
+      <h2>Insert</h2>
+    </div>
   </div>
-<br><br>
-<div class="row">
+
+<div class="hero">
 {% for i in images %}
-<div class="column" style="background-color:beige;">
+<div class="column" style="background-color:rgb(53, 3, 38); width: 250px;">
     <p>{{i[:-4]}}</p>  
 </div>
-<div class="column" style="background-color:palegoldenrod; ">
+<div class="column" style="background-color:white; width: 150px;">
     <form action="{{ url_for("delete")}}" method="post" enctype = "multipart/form-data">
     <input style = "width:230px;"class="flip-box-button" type="hidden" id = "file" name="file" value="{{i}}" placeholder="file">
     <button class="flip-box-button">Delete Image</button>
 </form>  
 </div>
-<div class="column" style="background-color:peachpuff">
+<div class="column" style="background-color:rgb(53, 3, 38); width: 400px;">
 <form action="{{ url_for("update")}}" method="post"enctype = "multipart/form-data">
     <input style = "width:230px;"class="flip-box-button" type="hidden" id = "file" name="oldfile" value="{{i}}" placeholder="file">
     <input style = "width:230px;"class="flip-box-button" type="file" id = "file" name="file" placeholder="file">
@@ -49,11 +83,13 @@
 {% endfor %}
 </div>
 
-<div style="margin-left:1200px; margin-top: -330px;">
-    <h2>Insert </h2> <br><br><br>
+<div style=" margin-left:800px; margin-top: -350px; zoom:110%;">
 <form action="{{ url_for("insert")}}" method="post"enctype = "multipart/form-data">
-    <input style = "width:230px;"class="flip-box-button" type="file" id = "file" name="file" placeholder="file">
+  <img style="float:left; width: 300px; height:280px; border-radius: 100% ;"
+            src="{{url_for('static', filename='insert.png')}}">
+    <input class="flip-box-button" type="file" id = "file" name="file" placeholder="file">
     <br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button class="flip-box-button">Upload Image</button>
+    <button style = " border-radius: 30px;">Upload Image</button>
 </form>  
 </div>
+</body>

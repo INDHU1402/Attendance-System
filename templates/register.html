@@ -11,22 +11,25 @@
   
   <body>
     <div class="container">
-      <div class="forms-container">
-        <div class="signin-signup" style="zoom: 110%;">
-         <form action="{{ url_for("admin")}}" method="post" class="sign-in-form" enctype = "multipart/form-data">
-            <h2 class="title">Login</h2>
+      <div class="forms-container" style="zoom: 110%;">
+        <div class="signin-signup">
+         <form action="{{ url_for("register")}}" method="post" class="sign-in-form" enctype = "multipart/form-data">
+            <h2 class="title">Register</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
               <input type="text" id="username" name="username" placeholder="Username" required="yes">
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" id="password" required="yes">
+              <input type="password" name="password1" placeholder="Password" id="password1" required="yes">
               <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
             </div>
-            <button class="btn">Sign in</button>
-            <p>Don't have an account ? </p>
-            <a href="/signup">Sign Up</button>
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password2" placeholder="Password" id="password2" required="yes">
+                <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+              </div>
+            <button class="btn">Sign Up</button>
           </form>
 
         </div>

@@ -5,6 +5,7 @@ import numpy as np
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
+path = 'images'
 app = Flask(__name__)
 
 @app.route("/")
@@ -14,6 +15,38 @@ def home():
 
 @app.route("/login")
 def login():
+    return render_template('login.html',flg=True)
+
+@app.route("/logout")
+def logout():
+    file = open(r'train.py', 'r').read()
+    exec(file)
+    return render_template('home.html', name = 'Mr. abcd', flg=True)
+
+@app.route("/signup")
+def signup():
+    return render_template('register.html')
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    nm = request.form["username"]
+    ps1 = request.form["password1"]
+    ps2 = request.form["password2"]
+    if ps1 == ps2:
+        with open('admins.csv','r+') as f:
+            myDataList = f.readlines()
+            nameList = []
+            for line in myDataList:
+                entry = line.split(',')
+                nameList.append(entry[0])
+            if nm not in nameList:
+                f.writelines("\n")
+                f.writelines(f'{nm},{ps1}')
+                f.writelines("\n")
+            else:
+                return "Already Registered"
+    else:
+        return "Password doesn't match"
     return render_template('login.html')
 
 @app.route('/delete', methods=["GET", "POST"])
@@ -30,7 +63,7 @@ def delete():
 @app.route('/update', methods=["GET", "POST"])
 def update():
     fn = request.form["oldfile"]
-    file = request.files["file"] 
+    file = request.files["file"]
     file_name = os.path.join('/home/indhu/Desktop/AttendanceSystem/images/', secure_filename(file.filename))
     file.save(file_name)
     fn1 = os.path.join('/home/indhu/Desktop/AttendanceSystem/images/', secure_filename(fn))
@@ -57,12 +90,21 @@ def admin():
     nm = request.form["username"]
     ps = request.form["password"]
     print(nm, ps)
-    if nm == "admin" and ps == "admin":
-        folder = 'images'
-        images = []
-        for filename in os.listdir(folder):
-            images.append(filename)
-        return render_template('admin.html', images=images)
+    with open('admins.csv','r+') as f:
+        myDataList = f.readlines()
+        nameList, pswList = [], []
+        for line in myDataList:
+            entry = line.split(',')
+            nameList.append(entry[0])
+            pswList.append(entry[1])
+    adminsList = list(zip(nameList, pswList))
+    for admin in adminsList:
+        if admin[0] == nm and admin[1] == ps:
+            folder = 'images'
+            images = []
+            for filename in os.listdir(folder):
+                images.append(filename)
+            return render_template('admin.html', images=images)
     return "Invalid Credentials!"
 
 @app.route("/attendance")

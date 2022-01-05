@@ -5,7 +5,6 @@ import numpy as np
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
-path = 'images'
 app = Flask(__name__)
 
 @app.route("/")
@@ -42,7 +41,6 @@ def register():
             if nm not in nameList:
                 f.writelines("\n")
                 f.writelines(f'{nm},{ps1}')
-                f.writelines("\n")
             else:
                 return "Already Registered"
     else:
@@ -98,9 +96,15 @@ def admin():
             nameList.append(entry[0])
             pswList.append(entry[1])
     adminsList = list(zip(nameList, pswList))
+    print(adminsList)
     for admin in adminsList:
-        if admin[0] == nm and admin[1] == ps:
-            folder = 'images'
+        if admin != adminsList[-1]:
+            psw = (admin[1])[:-1]
+        else:
+            psw = admin[1]
+        print(admin[0], psw)
+        if admin[0] == nm and psw == ps:
+            folder = 'students'
             images = []
             for filename in os.listdir(folder):
                 images.append(filename)

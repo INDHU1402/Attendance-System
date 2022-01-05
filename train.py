@@ -2,7 +2,7 @@ import cv2
 import face_recognition
 import os
 
-path = 'images'
+path = 'students'
 
 images = []
 classNames = []

@@ -5,7 +5,7 @@
         }
         .hero{
         background:whitesmoke;
-        width: 800px;
+        width: 950px;
         color: beige;
         display: table;
           clear: both;
@@ -18,6 +18,7 @@
         }
         .row:after {
           content: "";
+          width: 800px;
           display: table;
           clear: both;
         }
@@ -41,49 +42,84 @@
             color: #fff;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+  
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+      
+    $('.live-search-list li').each(function(){
+    $(this).attr('data-search-term', $(this).text().toLowerCase());
+    });
+      
+    $('.live-search-box').on('keyup', function(){
+      
+    var searchTerm = $(this).val().toLowerCase();
+      
+        $('.live-search-list li').each(function(){
+      
+            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+      
+        });
+      
+    });
+      
+    });
+    </script>
 </head>
 <body>
   <nav style="height: 70px; zoom: 120%;">
     <img src="{{url_for('static', filename='logo.png')}}"  style="margin-right: 500px; margin-top: 10px;" alt="" class="logo">
     <a class="two" style="float:left; margin-top: -15px; margin-left:1100px;" href="/logout">Logout</a>
 </nav>
+<div style=" background-color: black; height: 40px;">  
+  <br>&nbsp;&nbsp;&nbsp;
+<input type="text" class="live-search-box" placeholder=" search names" style="zoom: 130%; border-radius: 10px; width:350px; height:25px;"/>
+</div>
 <div class="row" style="background-color: black; color:white; height: 80px;">
-    <div class="column" style="width: 250px;">
-      <h2>Student Name</h2>
+  
+    <div class="column" style="width: 350px;">
+      <h2>&nbsp;&nbsp;&nbsp;Student Name</h2>
     </div>
     <div class="column" style="width: 150px;">
-      <h2>Delete</h2>
+      <h2>&nbsp;&nbsp;&nbsp;Delete</h2>
     </div>
     <div class="column" style="width: 400px;">
-      <h2>Update</h2>
+      <h2>&nbsp;&nbsp;&nbsp;Update</h2>
     </div>
-    <div class="column" style="width: 300px;">
-      <h2>Insert</h2>
+    <div class="column" style="width: 400px;">
+      <h2>&nbsp;&nbsp;&nbsp;Insert</h2>
     </div>
-  </div>
-
-<div class="hero">
+</div>
+<div class="hero" style="float: left; margin-left:-40px;">
+  <ul class="live-search-list" type="None">
 {% for i in images %}
-<div class="column" style="background-color:rgb(53, 3, 38); width: 250px;">
-    <p>{{i[:-4]}}</p>  
+<li>
+<div class="column" style="background-color:rgb(53, 3, 38); width:350px;">
+    <p>{{i[:-4]}}</p>
 </div>
 <div class="column" style="background-color:white; width: 150px;">
     <form action="{{ url_for("delete")}}" method="post" enctype = "multipart/form-data">
     <input style = "width:230px;"class="flip-box-button" type="hidden" id = "file" name="file" value="{{i}}" placeholder="file">
     <button class="flip-box-button">Delete Image</button>
-</form>  
+    </form>
 </div>
 <div class="column" style="background-color:rgb(53, 3, 38); width: 400px;">
-<form action="{{ url_for("update")}}" method="post"enctype = "multipart/form-data">
+    <form action="{{ url_for("update")}}" method="post"enctype = "multipart/form-data">
     <input style = "width:230px;"class="flip-box-button" type="hidden" id = "file" name="oldfile" value="{{i}}" placeholder="file">
     <input style = "width:230px;"class="flip-box-button" type="file" id = "file" name="file" placeholder="file">
     <button class="flip-box-button">Update Image</button>
-</form>  
-</div>
+    </form> 
+</div> </li>
 {% endfor %}
+</ul>
+
 </div>
 
-<div style=" margin-left:800px; margin-top: -350px; zoom:110%;">
+<div style="position:fixed; margin-left:900px; margin-top: 50px; zoom:110%;">
 <form action="{{ url_for("insert")}}" method="post"enctype = "multipart/form-data">
   <img style="float:left; width: 300px; height:280px; border-radius: 100% ;"
             src="{{url_for('static', filename='insert.png')}}">

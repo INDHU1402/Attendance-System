@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime
 import time
 
-path = 'images'
+path = 'students'
 
 images = []
 classNames = []
@@ -45,6 +45,7 @@ with open('train.csv','r+') as f:
         trainList.append(xs)
         
 encoded_face_train = trainList
+print(encoded_face_train)
 cap  = cv2.VideoCapture(0)
 success, img = cap.read()
 img1 = cv2.resize(img, (0,0), None, 0.25,0.25)

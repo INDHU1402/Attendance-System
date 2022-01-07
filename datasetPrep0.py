@@ -1,18 +1,19 @@
 from PIL import Image, ImageFilter 
 import os
 
-f = '/Desktop/Students'
+dataset_path = '/Desktop/students'
 
-for file in os.listdir(f):
-    f_img = f +"/" + file 
+for person in os.listdir(dataset_path):
+    f_img = dataset_path + "/" + person 
     img = Image.open(f_img)
-    s = f_img.replace(" ", "_")
+    s = person.replace(" ", "_")
+    s = s.replace(".", "_")
     if s[-5:].lower() == ".jpeg":
-      name = s[:-5] + ".jpg"
+      name = s[:-5] + "0.jpg"
     else:
-      name = s[:-4] + ".jpg"
+      name = s[:-4] + "0.jpg"
+    os.mkdir(dataset_path + "/" + name[:-5])
     print(name)
-    if name != f_img:
-      os.remove(f_img)
     img.thumbnail((224,224))
-    img.save(name)
+    img.save(dataset_path + "/" + name[:-5] + "/" + name)
+    os.remove(f_img)

@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime
 import time
 
-path = 'students'
+path = 'images'
 
 images = []
 classNames = []
@@ -15,7 +15,7 @@ for p in mylist:
     curImg = cv2.imread(f'{path}/{p}')
     images.append(curImg)
     classNames.append(os.path.splitext(p)[0])
-    
+
 def markAttendance(name):
     with open('Attendance.csv','r+') as f:
         myDataList = f.readlines()
@@ -45,7 +45,6 @@ with open('train.csv','r+') as f:
         trainList.append(xs)
         
 encoded_face_train = trainList
-print(encoded_face_train)
 cap  = cv2.VideoCapture(0)
 success, img = cap.read()
 img1 = cv2.resize(img, (0,0), None, 0.25,0.25)
@@ -54,8 +53,12 @@ face = face_recognition.face_locations(img1)
 encoded_face = face_recognition.face_encodings(img1, face)
 matches = face_recognition.compare_faces(encoded_face_train, encoded_face[0])
 faceDist = face_recognition.face_distance(encoded_face_train, encoded_face[0])
+xs = list(zip(classNames, matches, faceDist))
+ys = sorted(xs, key=lambda x:x[2])
+for i in ys:
+    print(str(i[0]) + " | " + str(i[1]) + " | " + str(i[2]) + "\n")
 matchIndex = np.argmin(faceDist)
-
+print(matchIndex)
 status = "unknown"
 if matches[matchIndex]:
     name = classNames[matchIndex].lower()

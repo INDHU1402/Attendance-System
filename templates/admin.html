@@ -68,6 +68,15 @@
     });
       
     });
+
+    var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) 
+    }
+  };
+
     </script>
 </head>
 <body>
@@ -118,14 +127,12 @@
 </ul>
 
 </div>
-
-<div style="position:fixed; margin-left:900px; margin-top: 50px; zoom:110%;">
-<form action="{{ url_for("insert")}}" method="post"enctype = "multipart/form-data">
-  <img style="float:left; width: 300px; height:280px; border-radius: 100% ;"
-            src="{{url_for('static', filename='insert.png')}}">
-    <input class="flip-box-button" type="file" id = "file" name="file" placeholder="file">
+<div style="position:fixed; margin-left:900px; margin-top: -100px; zoom:110%;">  
+  <form action="{{ url_for("insert")}}" method="post"enctype = "multipart/form-data"> 
+    <img style="float:left; margin-top: 130px; margin-left:130px; width: 200px; height:180px; border-radius: 100% ;" id="output"/>
+    <input class="flip-box-button" type="file" id = "file1" name="file" placeholder="file" onchange="loadFile(event)">
     <br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button style = " border-radius: 30px;">Upload Image</button>
-</form>  
+    <button style = "border-radius: 30px;">Upload Image</button>
+</form> 
 </div>
 </body>
